@@ -16,14 +16,19 @@ class Search extends Component {
   };
 
   onTextChange = (e) => {
+    const val = e.target.value;
     const { apiUrl, apiKey, searchText, amount } = this.state;
-    this.setState({ [e.target.name]: e.target.value }, () => {
-      axios
-        .get(
-          `${apiUrl}/?key=${apiKey}&q=${searchText}&image_type=photo&per_page=${amount}&safesearch=true`
-        )
-        .then((res) => this.setState({ images: res.data.hits }))
-        .catch((err) => console.log(err));
+    this.setState({ [e.target.name]: val }, () => {
+      if (val === '') {
+        this.setState({ images: [] });
+      } else {
+        axios
+          .get(
+            `${apiUrl}/?key=${apiKey}&q=${searchText}&image_type=photo&per_page=${amount}&safesearch=true`
+          )
+          .then((res) => this.setState({ images: res.data.hits }))
+          .catch((err) => console.log(err));
+      }
     });
   };
 
